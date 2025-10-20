@@ -1,236 +1,108 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+ <meta name="adchain-verification" content="C0C3937837874D1D">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jump Game by AB Studio</title>
-
-<!-- Basic CSP: প্রকৃত প্রকল্পে এই সোর্সগুলোকে তোমার প্রয়োজন অনুযায়ী কাস্টমাইজ করো -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: linear-gradient(to bottom, #4a90e2, #145a96);
     display: flex;
-    flex-direction: column;
-    gap: 14px;
-    align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    align-items: center;
+    height: 100vh;
     font-family: Arial, sans-serif;
-    padding: 12px;
   }
   .game {
-    width: min(95vw, 600px);
-    height: 220px;
+    width: 600px;
+    height: 200px;
     background: #fff;
     border: 3px solid #222;
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 15px;
   }
   #player {
-    width: 34px; height: 34px;
+    width: 30px;
+    height: 30px;
     background: crimson;
-    position: absolute; bottom: 0; left: 48px;
+    position: absolute;
+    bottom: 0;
+    left: 50px;
     border-radius: 6px;
-    transition: bottom 0.08s linear;
   }
   #obstacle {
-    width: 34px; height: 34px;
+    width: 30px;
+    height: 30px;
     background: green;
-    position: absolute; bottom: 0; right: -40px;
+    position: absolute;
+    bottom: 0;
+    right: -30px;
+    animation: move 1.5s linear infinite;
     border-radius: 6px;
   }
-  .scorebar {
-    display:flex; gap:6px; align-items:center;
-    padding:8px 10px; color:#111; font-weight:700;
+  @keyframes move {
+    0% { right: -30px; }
+    100% { right: 630px; }
   }
-  .controls { display:flex; gap:8px; align-items:center; }
-  button { padding:6px 10px; border-radius:6px; border:none; cursor:pointer; }
-  #message { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; color:#111; background:rgba(255,255,255,0.9); display:none; }
-  @keyframes obstacleMove {
-    0% { right: -40px; }
-    100% { right: calc(100% + 40px); }
+  .jump {
+    animation: jump 0.4s ease;
+  }
+  @keyframes jump {
+    0% { bottom: 0; }
+    50% { bottom: 80px; }
+    100% { bottom: 0; }
+  }
+  #score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-weight: bold;
   }
 </style>
 </head>
 <body>
-  <div class="game" id="gameBox" aria-label="Jump Game">
-    <div class="scorebar">
-      <div id="score">Score: 0</div>
-      <div style="flex:1"></div>
-      <div class="controls">
-        <button id="startBtn">Start</button>
-        <button id="pauseBtn">Pause</button>
-        <button id="restartBtn">Restart</button>
-      </div>
-    </div>
-
-    <div id="player" role="img" aria-label="player"></div>
-    <div id="obstacle" aria-hidden="true"></div>
-    <div id="message"></div>
+  <div class="game">
+    <div id="score">Score: 0</div>
+    <div id="player"></div>
+    <div id="obstacle"></div>
   </div>
-
-  <!-- Ad iframe: privacy-conscious attributes added -->
-  <!--
-    সতর্কবাণী: referrerpolicy, sandbox ইত্যাদি রেফারার বা iframe অধিকার সীমিত করে কিন্তু IP লুকায় না।
-    আইপি হাইড করার অনুরোধের জন্য আমি সহায়তা করব না — নিচের সেটিংগুলো প্রাইভেসি-সচেতন মাত্র।
-  -->
-  <iframe
-    src="//adsbitvex.site/adcode/banner-image/26/"
-    loading="lazy"
-    sandbox="allow-scripts allow-same-origin"
-    referrerpolicy="no-referrer"
-    scrolling="no"
-    style="width:min(95vw,718px); max-width:718px; height:90px; border:0; overflow:hidden;"
-    title="Ad banner"
-    aria-label="advertisement"></iframe>
-
+<iframe src="//adsbitvex.site/adcode/banner-text/31/" scrolling="no" style="width:718px; height:90px;border:0px; padding:0;overflow:hidden" allowtransparency="true"></iframe>
 <script>
-/* Simple game logic with better control and respect for visibility */
-const player = document.getElementById('player');
-const obstacle = document.getElementById('obstacle');
-const scoreEl = document.getElementById('score');
-const startBtn = document.getElementById('startBtn');
-const pauseBtn = document.getElementById('pauseBtn');
-const restartBtn = document.getElementById('restartBtn');
-const message = document.getElementById('message');
-const gameBox = document.getElementById('gameBox');
+  const player = document.getElementById("player");
+  const obstacle = document.getElementById("obstacle");
+  const scoreDisplay = document.getElementById("score");
 
-let running = false;
-let score = 0;
-let obstacleSpeed = 1800; // ms to cross
-let obsTimer = null;
-let tickTimer = null;
-let playerBottom = 0;
-let jumping = false;
+  let score = 0;
+  let isAlive = true;
 
-function startGame() {
-  if (running) return;
-  running = true;
-  message.style.display = 'none';
-  score = 0;
-  scoreEl.textContent = 'Score: 0';
-  startObstacle();
-  tickTimer = setInterval(gameTick, 100);
-}
-
-function pauseGame() {
-  running = false;
-  stopObstacle();
-  clearInterval(tickTimer);
-}
-
-function restartGame() {
-  pauseGame();
-  score = 0;
-  playerBottom = 0;
-  player.style.bottom = '0px';
-  obstacle.style.right = '-40px';
-  message.style.display = 'none';
-  startGame();
-}
-
-function gameTick(){
-  // Increment score only when running
-  if (!running) return;
-  score++;
-  scoreEl.textContent = 'Score: ' + score;
-  checkCollision();
-}
-
-// obstacle animation implemented by JS so we can pause/resume
-function startObstacle(){
-  animateObstacle();
-}
-function stopObstacle(){
-  if (obsTimer) { clearTimeout(obsTimer); obsTimer = null; }
-  obstacle.style.transition = 'none';
-  // freeze position by computing current right and applying it
-  const rect = obstacle.getBoundingClientRect();
-  const gameRect = gameBox.getBoundingClientRect();
-  const right = gameRect.right - rect.right;
-  obstacle.style.right = (right >= 0 ? right : 0) + 'px';
-}
-
-function animateObstacle(){
-  // random delay and speed for variety
-  const distanceMs = obstacleSpeed + Math.floor(Math.random()*800) - 200;
-  // reset to starting pos
-  obstacle.style.transition = 'none';
-  obstacle.style.right = '-40px';
-  // allow a tiny timeout so style applies
-  setTimeout(() => {
-    obstacle.style.transition = `right ${distanceMs}ms linear`;
-    obstacle.style.right = 'calc(100% + 40px)';
-    // when animation ends, re-run
-    obsTimer = setTimeout(animateObstacle, distanceMs + 200);
-  }, 50);
-}
-
-function checkCollision(){
-  const playerRect = player.getBoundingClientRect();
-  const obstacleRect = obstacle.getBoundingClientRect();
-  // basic AABB collision
-  if (playerRect.right > obstacleRect.left + 6 &&
-      playerRect.left < obstacleRect.right - 6 &&
-      playerRect.bottom > obstacleRect.top + 6) {
-    // collision
-    gameOver();
-  }
-}
-
-function gameOver(){
-  pauseGame();
-  message.style.display = 'flex';
-  message.textContent = `💀 Game Over! Score: ${score}`;
-}
-
-function doJump(){
-  if (!running) return;
-  if (jumping) return;
-  jumping = true;
-  let up = 0;
-  const peak = 80; // px
-  const upInterval = setInterval(() => {
-    up += 8;
-    player.style.bottom = up + 'px';
-    if (up >= peak) {
-      clearInterval(upInterval);
-      // come down
-      const downInterval = setInterval(() => {
-        up -= 8;
-        player.style.bottom = up + 'px';
-        if (up <= 0) {
-          clearInterval(downInterval);
-          jumping = false;
-          player.style.bottom = '0px';
-        }
-      }, 20);
+  document.addEventListener("keydown", function(e) {
+    if (e.code === "Space" || e.code === "ArrowUp") {
+      if (!player.classList.contains("jump")) {
+        player.classList.add("jump");
+        setTimeout(() => player.classList.remove("jump"), 400);
+      }
     }
-  }, 20);
-}
+  });
 
-// keyboard + touch
-document.addEventListener('keydown', (e) => { if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); doJump(); }});
-gameBox.addEventListener('touchstart', (e) => { e.preventDefault(); doJump(); }, {passive:false});
+  const checkCollision = setInterval(() => {
+    const playerBottom = parseInt(window.getComputedStyle(player).getPropertyValue("bottom"));
+    const obstacleRight = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
 
-// visibility handling: pause when tab hidden
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) pauseGame();
-});
+    if (obstacleRight > 500 && obstacleRight < 580 && playerBottom < 30) {
+      isAlive = false;
+      obstacle.style.animation = "none";
+      alert(`💀 Game Over! Your Score: ${score}`);
+      location.reload();
+    }
 
-// control buttons
-startBtn.addEventListener('click', startGame);
-pauseBtn.addEventListener('click', () => { if (running) pauseGame(); else startGame(); });
-restartBtn.addEventListener('click', restartGame);
-
-// accessibility: start game automatically for desktop user gestures
-window.addEventListener('load', () => {
-  // nothing auto-start to avoid unexpected ad impressions; user clicks Start
-});
+    if (isAlive) {
+      score++;
+      scoreDisplay.textContent = `Score: ${score}`;
+    }
+  }, 100);
 </script>
 </body>
-</html>
+</html> 
