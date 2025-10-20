@@ -1,1 +1,108 @@
-<div class='MainAdverTiseMentDiv' data-publisher="eyJpdiI6IjF2QU1pbTNOVGpNUThSNk1TSmpKTVE9PSIsInZhbHVlIjoiTjA0MkVpZythZFo2dmFqV09TNitqdz09IiwibWFjIjoiZjY1MTE0YzNjODAzZWI1NDk2MGIyM2VkNzBkNzJlY2NhOWE4YWI3MzczZjgxOWI2OTQ2M2NjNTI0OGZlMDRkMSIsInRhZyI6IiJ9" data-adsize="300x250"></div> <script class="adScriptClass" src="https://adsbitvex.site/assets/ads/ad.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="adchain-verification" content="9C97EE7ACD5B0BAB">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jump Game by AB Studio</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: linear-gradient(to bottom, #4a90e2, #145a96);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  .game {
+    width: 600px;
+    height: 200px;
+    background: #fff;
+    border: 3px solid #222;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  #player {
+    width: 30px;
+    height: 30px;
+    background: crimson;
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    border-radius: 6px;
+  }
+  #obstacle {
+    width: 30px;
+    height: 30px;
+    background: green;
+    position: absolute;
+    bottom: 0;
+    right: -30px;
+    animation: move 1.5s linear infinite;
+    border-radius: 6px;
+  }
+  @keyframes move {
+    0% { right: -30px; }
+    100% { right: 630px; }
+  }
+  .jump {
+    animation: jump 0.4s ease;
+  }
+  @keyframes jump {
+    0% { bottom: 0; }
+    50% { bottom: 80px; }
+    100% { bottom: 0; }
+  }
+  #score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <div class="game">
+    <div id="score">Score: 0</div>
+    <div id="player"></div>
+    <div id="obstacle"></div>
+  </div>
+
+<script>
+  const player = document.getElementById("player");
+  const obstacle = document.getElementById("obstacle");
+  const scoreDisplay = document.getElementById("score");
+
+  let score = 0;
+  let isAlive = true;
+
+  document.addEventListener("keydown", function(e) {
+    if (e.code === "Space" || e.code === "ArrowUp") {
+      if (!player.classList.contains("jump")) {
+        player.classList.add("jump");
+        setTimeout(() => player.classList.remove("jump"), 400);
+      }
+    }
+  });
+
+  const checkCollision = setInterval(() => {
+    const playerBottom = parseInt(window.getComputedStyle(player).getPropertyValue("bottom"));
+    const obstacleRight = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
+
+    if (obstacleRight > 500 && obstacleRight < 580 && playerBottom < 30) {
+      isAlive = false;
+      obstacle.style.animation = "none";
+      alert(`💀 Game Over! Your Score: ${score}`);
+      location.reload();
+    }
+
+    if (isAlive) {
+      score++;
+      scoreDisplay.textContent = `Score: ${score}`;
+    }
+  }, 100);
+</script>
+</body>
+</html>
