@@ -2,108 +2,169 @@
 <html lang="en">
 <head>
  <script type="text/javascript" src="//adsbitvex.site/codes/zone?rcd=MjQ="></script>
- <meta name="adchain-verification" content="C0C3937837874D1D">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jump Game by AB Studio</title>
+<title>My Awesome Website</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: linear-gradient(to bottom, #4a90e2, #145a96);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-  }
-  .game {
-    width: 600px;
-    height: 200px;
-    background: #fff;
-    border: 3px solid #222;
-    position: relative;
-    overflow: hidden;
-    border-radius: 15px;
-  }
-  #player {
-    width: 30px;
-    height: 30px;
-    background: crimson;
-    position: absolute;
-    bottom: 0;
-    left: 50px;
-    border-radius: 6px;
-  }
-  #obstacle {
-    width: 30px;
-    height: 30px;
-    background: green;
-    position: absolute;
-    bottom: 0;
-    right: -30px;
-    animation: move 1.5s linear infinite;
-    border-radius: 6px;
-  }
-  @keyframes move {
-    0% { right: -30px; }
-    100% { right: 630px; }
-  }
-  .jump {
-    animation: jump 0.4s ease;
-  }
-  @keyframes jump {
-    0% { bottom: 0; }
-    50% { bottom: 80px; }
-    100% { bottom: 0; }
-  }
-  #score {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-weight: bold;
-  }
+    /* Reset some default styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { line-height: 1.6; background: #f4f4f4; color: #333; }
+    
+    header {
+        background: #007BFF;
+        color: white;
+        padding: 1rem 0;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    header nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    header nav a:hover {
+        text-decoration: underline;
+    }
+
+    .hero {
+        background: url('https://source.unsplash.com/1600x900/?nature') no-repeat center center/cover;
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        flex-direction: column;
+    }
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+    .hero button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border: none;
+        background: #FFC107;
+        color: #333;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+    .hero button:hover {
+        background: #FF9800;
+        color: white;
+    }
+
+    section {
+        padding: 60px 20px;
+        max-width: 1000px;
+        margin: auto;
+    }
+    .about, .contact {
+        background: white;
+        margin-bottom: 40px;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .about h2, .contact h2 {
+        margin-bottom: 20px;
+        color: #007BFF;
+    }
+
+    .contact form {
+        display: flex;
+        flex-direction: column;
+    }
+    .contact input, .contact textarea {
+        margin-bottom: 15px;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: none;
+    }
+    .contact button {
+        padding: 10px;
+        font-size: 1rem;
+        border: none;
+        background: #007BFF;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .contact button:hover {
+        background: #0056b3;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        background: #333;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 2rem; }
+    }
 </style>
 </head>
 <body>
-  <div class="game">
-    <div id="score">Score: 0</div>
-    <div id="player"></div>
-    <div id="obstacle"></div>
-  </div>
-<iframe src="//adsbitvex.site/adcode/banner-text/31/" scrolling="no" style="width:718px; height:90px;border:0px; padding:0;overflow:hidden" allowtransparency="true"></iframe>
+
+<header>
+    <h1>My Website</h1>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Welcome to My Website</h1>
+    <p>We make awesome things happen!</p>
+    <button onclick="scrollToSection('about')">Learn More</button>
+</section>
+
+<section class="about" id="about">
+    <h2>About Us</h2>
+    <p>
+        We are passionate about creating amazing web experiences using only HTML, CSS, and JavaScript. 
+        Our goal is to make websites that are both beautiful and functional.
+    </p>
+</section>
+
+<section class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+        <input type="text" placeholder="Your Name" id="name" required>
+        <input type="email" placeholder="Your Email" id="email" required>
+        <textarea placeholder="Your Message" id="message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+</section>
+
+<footer>
+    &copy; 2025 My Awesome Website. All rights reserved.
+</footer>
+
 <script>
-  const player = document.getElementById("player");
-  const obstacle = document.getElementById("obstacle");
-  const scoreDisplay = document.getElementById("score");
-
-  let score = 0;
-  let isAlive = true;
-
-  document.addEventListener("keydown", function(e) {
-    if (e.code === "Space" || e.code === "ArrowUp") {
-      if (!player.classList.contains("jump")) {
-        player.classList.add("jump");
-        setTimeout(() => player.classList.remove("jump"), 400);
-      }
-    }
-  });
-
-  const checkCollision = setInterval(() => {
-    const playerBottom = parseInt(window.getComputedStyle(player).getPropertyValue("bottom"));
-    const obstacleRight = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
-
-    if (obstacleRight > 500 && obstacleRight < 580 && playerBottom < 30) {
-      isAlive = false;
-      obstacle.style.animation = "none";
-      alert(`💀 Game Over! Your Score: ${score}`);
-      location.reload();
+    function scrollToSection(id) {
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     }
 
-    if (isAlive) {
-      score++;
-      scoreDisplay.textContent = `Score: ${score}`;
-    }
-  }, 100);
+    // Simple contact form alert
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        alert(`Thank you, ${name}! Your message has been sent.`);
+        this.reset();
+    });
 </script>
+
 </body>
-</html> 
+</html>
